@@ -28,3 +28,5 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- Keep the TOPONE prototype frontend-only until Lovable Cloud and a voice provider are enabled; label browser-local account data and simulated calls as demos so they are never mistaken for synced accounts or live audio.
