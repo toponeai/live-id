@@ -515,7 +515,7 @@ function ContactRow({ person, favorite, onCall, onFavorite }: { person: ToponeId
   </div>;
 }
 
-function HistoryRow({ entry, person, onCall }: { entry: CallEntry; person?: ToponeIdentity; onCall: () => void }) {
+function HistoryRow({ entry, person, onCall }: { entry: CallEntry; person?: ToponeIdentity | undefined; onCall: () => void }) {
   const isIncoming = entry.direction === "incoming";
   return <div className="flex min-w-0 items-center gap-3 py-3.5">
     <div className="grid size-10 shrink-0 place-items-center rounded-full bg-secondary text-secondary-foreground">{isIncoming ? <ArrowDownLeft className="size-[18px]" /> : <ArrowUpRight className="size-[18px]" />}</div>
