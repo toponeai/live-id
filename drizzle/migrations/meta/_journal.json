@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1794840316350,
+      "tag": "0000_topone_accounts_messaging_privacy",
+      "breakpoints": true
+    }
+  ]
+}
