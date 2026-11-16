@@ -13,7 +13,7 @@ describe("TOPONE country-scoped identifiers", () => {
   });
 
   it("allows the same username in a different country", () => {
-    expect(isAvailableCountryUsername("SA", "OMAR", INITIAL_IDENTITIES)).toBe(true);
+    expect(isAvailableCountryUsername("KW", "OMAR", INITIAL_IDENTITIES)).toBe(true);
   });
 
   it("rejects duplicate usernames in the same country regardless of case", () => {

@@ -368,7 +368,7 @@ function ToponeApp() {
                   <span className="rounded-full px-3 py-1.5 text-xs text-muted-foreground">الواردة</span>
                   <span className="rounded-full px-3 py-1.5 text-xs text-muted-foreground">الصادرة</span>
                 </div>
-                {history.length ? <div className="divide-y divide-topone-hairline/70">{history.map((entry, index) => <HistoryRow key={`${entry.id}-${index}`} entry={entry} person={identities.find((person) => person.id === entry.id)} onCall={() => findAndCall(entry.id, identities, startCall)} />)}</div> : <EmptyState title="لا توجد مكالمات بعد" caption="ستظهر هنا שיחותك الأخيرة." />}
+                {history.length ? <div className="divide-y divide-topone-hairline/70">{history.map((entry, index) => <HistoryRow key={`${entry.id}-${index}`} entry={entry} person={identities.find((person) => person.id === entry.id)} onCall={() => findAndCall(entry.id, identities, startCall)} />)}</div> : <EmptyState title="لا توجد مكالمات بعد" caption="ستظهر هنا مكالماتك الأخيرة." />}
                 <PrototypeNotice />
               </>
             )}
