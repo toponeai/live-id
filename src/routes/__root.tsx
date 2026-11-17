@@ -16,7 +16,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { supabase } from "../integrations/supabase/client";
 
 /** Authenticated Supabase identity available to account routes. */
-export const ToponeAuthContext = createContext<{ user: User | null } | null>(null);
+export const ToponeAuthContext = createContext<{ user: User | null; authReady: boolean } | null>(null);
 
 function NotFoundComponent() {
   return (
@@ -136,7 +136,6 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ToponeAuthContext.Provider value={{ user, authReady }}>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
       </ToponeAuthContext.Provider>
     </QueryClientProvider>
