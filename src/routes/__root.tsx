@@ -80,9 +80,6 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
-    // Replace these placeholders with the app's name and description when first building the app.
-    // Each content route, / included, must still set its own head(). Never add og:image or
-    // twitter:image here: every page without its own would inherit the root's preview image.
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -126,22 +123,31 @@ function RootComponent() {
 
   useEffect(() => {
     let mounted = true;
-    void supabase.auth.getSession().then(({ data, error }) => {
-      if (mounted && !error) setUser(data.session?.user ?? null);
-    });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null);
-    });
-    return () => {
-      mounted = false;
-      listener.subscription.unsubscribe();
-    };
+
+    try {
+      void supabase.auth.getSession().then(({ data, error }) => {
+        if (mounted && !error) setUser(data.session?.user ?? null);
+      });
+
+      const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (mounted) setUser(session?.user ?? null);
+      });
+
+      return () => {
+        mounted = false;
+        listener.subscription.unsubscribe();
+      };
+    } catch {
+      if (mounted) setUser(null);
+      return () => {
+        mounted = false;
+      };
+    }
   }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
       <ToponeAuthContext.Provider value={{ user }}>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
       </ToponeAuthContext.Provider>
     </QueryClientProvider>
