@@ -15,7 +15,6 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { supabase } from "../integrations/supabase/client";
 
-/** Authenticated Supabase identity available to account routes. */
 export const ToponeAuthContext = createContext<{ user: User | null; authReady: boolean } | null>(null);
 
 function NotFoundComponent() {
@@ -24,14 +23,8 @@ function NotFoundComponent() {
       <div className="max-w-md text-center">
         <h1 className="text-7xl font-bold text-foreground">404</h1>
         <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link to="/" className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">
-            Go home
-          </Link>
-        </div>
+        <p className="mt-2 text-sm text-muted-foreground">The page you're looking for doesn't exist or has been moved.</p>
+        <div className="mt-6"><Link to="/" className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">Go home</Link></div>
       </div>
     </div>
   );
@@ -40,24 +33,15 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
-
+  useEffect(() => { reportLovableError(error, { boundary: "tanstack_root_error_component" }); }, [error]);
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">This page didn't load</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
-        </p>
+        <p className="mt-2 text-sm text-muted-foreground">Something went wrong on our end. You can try refreshing or head back home.</p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button onClick={() => { router.invalidate(); reset(); }} className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">
-            Try again
-          </button>
-          <a href="/" className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent">
-            Go home
-          </a>
+          <button onClick={() => { router.invalidate(); reset(); }} className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">Try again</button>
+          <a href="/" className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent">Go home</a>
         </div>
       </div>
     </div>
@@ -78,10 +62,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
     ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
-    ],
+    links: [{ rel: "stylesheet", href: appCss }, { rel: "icon", href: "/favicon.ico", type: "image/x-icon" }],
   }),
   shellComponent: RootShell,
   component: RootComponent,
@@ -90,12 +71,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
-  return (
-    <html lang="ar" dir="rtl">
-      <head><HeadContent /></head>
-      <body>{children}<Scripts /></body>
-    </html>
-  );
+  return <html lang="ar" dir="rtl"><head><HeadContent /></head><body>{children}<Scripts /></body></html>;
 }
 
 function RootComponent() {
@@ -106,7 +82,6 @@ function RootComponent() {
   useEffect(() => {
     let mounted = true;
     let unsubscribe = () => {};
-
     try {
       const { data } = supabase.auth.onAuthStateChange((_event, session) => {
         if (mounted) {
@@ -115,29 +90,20 @@ function RootComponent() {
         }
       });
       unsubscribe = () => data.subscription.unsubscribe();
-
       void supabase.auth.getSession().then(({ data: sessionData, error }) => {
         if (!mounted) return;
         if (!error) setUser(sessionData.session?.user ?? null);
         setAuthReady(true);
-      }).catch(() => {
-        if (mounted) setAuthReady(true);
-      });
+      }).catch(() => { if (mounted) setAuthReady(true); });
     } catch {
       setAuthReady(true);
     }
-
-    return () => {
-      mounted = false;
-      unsubscribe();
-    };
+    return () => { mounted = false; unsubscribe(); };
   }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ToponeAuthContext.Provider value={{ user, authReady }}>
-        <Outlet />
-      </ToponeAuthContext.Provider>
+      <ToponeAuthContext.Provider value={{ user, authReady }}><Outlet /></ToponeAuthContext.Provider>
     </QueryClientProvider>
   );
 }
