@@ -8,8 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export function LiveAppNavigation() {
   const auth = useContext(ToponeAuthContext);
-  const user = auth?.user;
-  if (!user) return null;
+  if (!auth?.user) return null;
 
   return (
     <nav aria-label="تنقل الحساب" className="sticky top-0 z-30 border-b bg-background/95 px-4 py-2 backdrop-blur sm:px-7">
