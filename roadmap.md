@@ -1,10 +1,39 @@
-# TOPONE
+# TOPONE — خطة التطوير والإطلاق
 
-- [x] Plan Arabic phone-like calling interface and define ID rules.
-- [x] Build interactive RTL demo screens: search, dial pad, history, contacts, and saved contacts.
-- [x] Enable Lovable Cloud and add protected profiles, privacy settings, contact requests, conversations, and message storage.
-- [ ] Configure an SMS provider in Cloud phone-auth settings before phone verification can send codes. Requires provider credentials and may incur provider charges.
-- [ ] Connect a real SIP/WebRTC voice and video provider and TURN service. Blocked: voice service and credentials are not configured.
-- [x] Verify UI and prototype flows on desktop and mobile.
-- [ ] Finish phone OTP UI, real profile/privacy and messaging screens, and Arabic/English language switching.
-- [ ] Re-test OTP, messaging, and real voice integration when their provider prerequisites are available.
+## الحالة الحالية
+
+- [x] واجهة نموذج RTL عربية للبحث ولوحة الاتصال والسجل وجهات الاتصال، مع حفظ محلي تحت `topone-demo-v1`.
+- [x] فصل التجربة المحلية عن التطبيق الحقيقي: `/demo` للتجربة و`/app` للحساب، و`/` يحيل إلى النسخة التجريبية.
+- [x] إضافة تدفقات OTP والجلسة وإنشاء الملف الشخصي بعد التحقق من الحساب.
+- [x] إضافة صفحة جهات الاتصال `/app/contacts` لطلبات التواصل والاكتشاف والحظر.
+- [x] إضافة صفحة الرسائل `/app/messages` للمحادثات والرسائل الفورية.
+- [x] توحيد التنقل بين مسارات الحساب وجهات الاتصال والرسائل.
+- [x] تطبيق حارس موحد على كل مسارات `/app/*` للتحقق من الجلسة ووجود الملف الشخصي قبل عرض المحتوى.
+- [ ] تشغيل `npm test` و`npm run lint` و`npm run build` والتحقق من مسارات TanStack المولّدة.
+- [ ] تأكيد إعداد مزود SMS واختبار OTP فعليًا في Supabase/Lovable Cloud.
+- [ ] مراجعة سياسات RLS، قواعد التفرد، وإجراءات RPC عبر Lovable؛ قاعدة البيانات والملفات المولّدة لا تعدّل يدويًا وفق `AGENTS.md`.
+- [ ] التحقق من صلاحيات وإعداد Realtime لجدول `messages` في بيئة Supabase.
+- [ ] اختيار مزود SIP/WebRTC وإعداد TURN واختبار المكالمات الحقيقية؛ تبقى المكالمات تجريبية حتى ذلك الحين.
+- [ ] تدقيق العربية/الإنجليزية وRTL/LTR وإمكانية الوصول وتجربة الهاتف.
+- [ ] تجهيز النشر التدريجي والمراقبة مع عدم تسجيل OTP أو الأسرار أو محتوى الرسائل.
+
+## بوابات قبول الإنتاج
+
+- OTP يعمل بمزود مهيأ وحدود إرسال مناسبة.
+- لا يستطيع المستخدم قراءة/تغيير بيانات مستخدم آخر، وتغطي RLS كل جدول وعملية حساسة.
+- لا تظهر الملفات غير القابلة للاكتشاف، ولا تتجاوز الطلبات أو الرسائل إعدادات الحظر والخصوصية.
+- الرسائل لا تصل إلا إلى أعضاء المحادثة المصرح لهم؛ Realtime يعمل بعد تهيئته والتحقق منه.
+- لا توصف أي مكالمة بأنها حقيقية ما لم تختبر عبر مزود فعلي وTURN.
+- تنجح الاختبارات والبناء، وتدار الأسرار خارج المستودع وكود المتصفح.
+
+## التشغيل والتحقق محليًا
+
+```sh
+npm install
+npm run dev
+npm test
+npm run lint
+npm run build
+```
+
+قاعدة البيانات وسياسات RLS يديرها Lovable Cloud؛ تحديثاتها يجب أن تتم عبر Lovable. إعداد SMS ومزود المكالمات يحتاج اعتمادات من لوحات الخدمة وقد يترتب عليه تكاليف. لا تُعد هذه المتطلبات منجزة بمجرد إضافة واجهات الشيفرة.
