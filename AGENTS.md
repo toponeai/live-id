@@ -29,4 +29,5 @@ use the editor.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
 
-- Keep the TOPONE prototype frontend-only until Lovable Cloud and a voice provider are enabled; label browser-local account data and simulated calls as demos so they are never mistaken for synced accounts or live audio.
+- Use Lovable Cloud authentication and row-level access rules for TOPONE accounts and messaging; keep calls labeled as demos until a real voice/video provider is configured.
+- Keep the browser UI and database schema separate: account-owned records are accessed through authenticated Cloud policies, while local demo data must never be presented as synced account data.
