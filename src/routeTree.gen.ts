@@ -10,33 +10,89 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as DemoRouteImport } from './routes/demo'
+import { Route as AppContactsRouteImport } from './routes/app.contacts'
+import { Route as AppMessagesRouteImport } from './routes/app.messages'
+import { Route as AuthPhoneRouteImport } from './routes/auth/phone'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoRoute = DemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppContactsRoute = AppContactsRouteImport.update({
+  id: '/contacts',
+  path: '/contacts',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMessagesRoute = AppMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => AppRoute,
+} as any)
+const AuthPhoneRoute = AuthPhoneRouteImport.update({
+  id: '/auth/phone',
+  path: '/auth/phone',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/demo': typeof DemoRoute
+  '/app/contacts': typeof AppContactsRoute
+  '/app/messages': typeof AppMessagesRoute
+  '/auth/phone': typeof AuthPhoneRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/demo': typeof DemoRoute
+  '/app/contacts': typeof AppContactsRoute
+  '/app/messages': typeof AppMessagesRoute
+  '/auth/phone': typeof AuthPhoneRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteWithChildren
+  '/demo': typeof DemoRoute
+  '/app/contacts': typeof AppContactsRoute
+  '/app/messages': typeof AppMessagesRoute
+  '/auth/phone': typeof AuthPhoneRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/app' | '/demo' | '/app/contacts' | '/app/messages' | '/auth/phone'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/app' | '/demo' | '/app/contacts' | '/app/messages' | '/auth/phone'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/demo'
+    | '/app/contacts'
+    | '/app/messages'
+    | '/auth/phone'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRoute: typeof AppRouteWithChildren
+  DemoRoute: typeof DemoRoute
+  AuthPhoneRoute: typeof AuthPhoneRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +104,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo': {
+      id: '/demo'
+      path: '/demo'
+      fullPath: '/demo'
+      preLoaderRoute: typeof DemoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/contacts': {
+      id: '/app/contacts'
+      path: '/contacts'
+      fullPath: '/app/contacts'
+      preLoaderRoute: typeof AppContactsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/messages': {
+      id: '/app/messages'
+      path: '/messages'
+      fullPath: '/app/messages'
+      preLoaderRoute: typeof AppMessagesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/auth/phone': {
+      id: '/auth/phone'
+      path: '/auth/phone'
+      fullPath: '/auth/phone'
+      preLoaderRoute: typeof AuthPhoneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
+interface AppRouteChildren {
+  AppContactsRoute: typeof AppContactsRoute
+  AppMessagesRoute: typeof AppMessagesRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppContactsRoute: AppContactsRoute,
+  AppMessagesRoute: AppMessagesRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRoute: AppRouteWithChildren,
+  DemoRoute: DemoRoute,
+  AuthPhoneRoute: AuthPhoneRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
