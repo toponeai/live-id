@@ -262,6 +262,10 @@ export type Database = {
         Args: { _recipient: string; _sender: string }
         Returns: boolean
       }
+      topone_is_blocked: {
+        Args: { _user_a: string; _user_b: string }
+        Returns: boolean
+      }
       topone_respond_contact_request: {
         Args: { _request_id: string; _status: string }
         Returns: boolean
