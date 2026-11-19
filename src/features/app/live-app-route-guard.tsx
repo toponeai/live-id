@@ -23,10 +23,12 @@ export function LiveAppRouteGuard({ children }: { children: ReactNode }) {
     let active = true;
     setProfileState("checking");
     void supabase.from("profiles").select("user_id").eq("user_id", auth.user.id).maybeSingle()
-      .then(({ data, error }) => {
-        if (active) setProfileState(error ? "error" : data ? "ready" : "setup");
-      })
-      .catch(() => { if (active) setProfileState("error"); });
+      .then(
+        ({ data, error }) => {
+          if (active) setProfileState(error ? "error" : data ? "ready" : "setup");
+        },
+        () => { if (active) setProfileState("error"); },
+      );
 
     return () => { active = false; };
   }, [auth?.authReady, auth?.user, checkVersion]);

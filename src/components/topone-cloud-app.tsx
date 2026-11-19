@@ -30,7 +30,7 @@ const copy = {
 } as const;
 
 const COUNTRIES: { code: CountryCode; name: string; dialCode: string }[] = [
-  { code: "EG", name: "مصر", dialCode: "+20" }, { code: "SA", name: "السعودية", dialCode: "+966" }, { code: "AE", name: "الإمارات", dialCode: "+971" }, { code: "JO", name: "الأردن", dialCode: "+962" }, { code: "KW", name: "الكويت", dialCode: "+965" }, { code: "GB", name: "United Kingdom", dialCode: "+44" }, { code: "US", name: "United States", dialCode: "+1" },
+  { code: "EG", name: "مصر", dialCode: "+20" }, { code: "SA", name: "السعودية", dialCode: "+966" }, { code: "AE", name: "الإمارات", dialCode: "+971" }, { code: "JO", name: "الأردن", dialCode: "+962" }, { code: "KW", name: "الكويت", dialCode: "+965" }, { code: "GB", name: "United Kingdom", dialCode: "+44" },
 ];
 
 export function ToponeCloudApp() {

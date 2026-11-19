@@ -56,12 +56,12 @@ export async function sendMessageToConversation(conversationId: string, senderId
 }
 
 export async function createConversationForUsers(userA: string, userB: string, createdBy: string) {
-  const pair = [userA, userB].sort();
+  const [first, second] = userA < userB ? [userA, userB] : [userB, userA];
   const { data, error } = await supabase
     .from("conversations")
     .insert({
-      user_a: pair[0],
-      user_b: pair[1],
+      user_a: first,
+      user_b: second,
       created_by: createdBy,
     })
     .select("*")
